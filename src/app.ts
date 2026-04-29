@@ -4,6 +4,8 @@ import { notFound } from "./middlewares/not-found"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import { router } from "./routes"
+import { toNodeHandler } from "better-auth/node"
+import { auth } from "./lib/auth"
 
 const app = express()
 
@@ -16,6 +18,9 @@ app.use(
         credentials: true,
     }),
 )
+
+app.all("/api/auth/{*any}", toNodeHandler(auth))
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
